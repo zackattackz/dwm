@@ -2,6 +2,7 @@
 VERSION = 6.5
 
 # Customize below to fit your system
+HOST=$(shell hostname)
 
 # paths
 PREFIX = /usr/local
@@ -37,3 +38,7 @@ LDFLAGS  = ${LIBS}
 
 # compiler and linker
 CC = cc
+
+ifeq ($(HOST),unagi)
+	CFLAGS := -DUNAGI -DLAPTOP ${CFLAGS}
+endif
