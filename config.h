@@ -65,6 +65,9 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *webcmd[]  = { "firefox", NULL };
 static const char *upbrightness[]   = { "xbacklight", "-inc", "10", NULL };
 static const char *downbrightness[] = { "xbacklight", "-dec", "10", NULL };
+static const char *upvolume[]   = { "wpctl", "set-volume", "-l", "1.0", "@DEFAULT_SINK@", "5%+", NULL };
+static const char *downvolume[]   = { "wpctl", "set-volume", "-l", "0.0", "@DEFAULT_SINK@", "5%-", NULL };
+static const char *mutevolume[]   = { "wpctl", "set-mute", "@DEFAULT_SINK@", "toggle", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -109,6 +112,9 @@ static const Key keys[] = {
 #ifdef LAPTOP
 	{ 0,                            XF86XK_MonBrightnessUp,    spawn,          {.v = upbrightness } },
 	{ 0,                            XF86XK_MonBrightnessDown,  spawn,          {.v = downbrightness } },
+	{ 0,                            XF86XK_AudioRaiseVolume,   spawn,          {.v = upvolume } },
+	{ 0,                            XF86XK_AudioLowerVolume,   spawn,          {.v = downvolume } },
+	{ 0,                            XF86XK_AudioMute,          spawn,          {.v = mutevolume } },
 
 #endif /* LAPTOP */
 };
