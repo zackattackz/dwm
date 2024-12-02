@@ -213,6 +213,7 @@ static void setup(void);
 static void setviewport(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
+int exec_sync(char *const argv[]);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
@@ -1034,6 +1035,14 @@ killclient(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;
+	if (strcmp(selmon->sel->name, "st") == 0) {
+		char *script = "stclose.sh";
+		char *args[] = {script, NULL};
+		int code = exec_sync(args);
+		if (code == 0) {
+			return;
+		}
+	}
 	if (!sendevent(selmon->sel, wmatom[WMDelete])) {
 		XGrabServer(dpy);
 		XSetErrorHandler(xerrordummy);
@@ -1730,6 +1739,31 @@ showhide(Client *c)
 		showhide(c->snext);
 		XMoveWindow(dpy, c->win, WIDTH(c) * -2, c->y);
 	}
+}
+
+int exec_sync(char *const argv[]) {
+	pid_t pid;
+	int status;
+
+	if ((pid = fork()) == 0) {
+		// Child process
+		execvp(argv[0], argv);
+		die("dwm: execvp '%s' failed:", ((char **)argv)[0]);
+	} else if (pid > 0) {
+		// Parent process
+		if (waitpid(pid, &status, 0) != -1) {
+			if (WIFEXITED(status)) {
+				return WEXITSTATUS(status); // Return the exit code
+			} else {
+				return -1;
+			}
+		} else {
+			perror("waitpid");
+			return -1;
+		}
+	}
+	perror("fork");
+	return -1;
 }
 
 void
