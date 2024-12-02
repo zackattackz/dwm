@@ -68,6 +68,7 @@ static const char *downbrightness[] = { "xbacklight", "-dec", "10", NULL };
 static const char *upvolume[]   = { "wpctl", "set-volume", "-l", "1.0", "@DEFAULT_SINK@", "5%+", NULL };
 static const char *downvolume[]   = { "wpctl", "set-volume", "-l", "0.0", "@DEFAULT_SINK@", "5%-", NULL };
 static const char *mutevolume[]   = { "wpctl", "set-mute", "@DEFAULT_SINK@", "toggle", NULL };
+static const char *lockcmd[]   = { "xautolock", "-locknow", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -93,8 +94,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_p,      setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_p,      togglefloating, {0} },
 	{ MODKEY,                       XK_y,      togglefullscr,  {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+	{ MODKEY,                       XK_0,      spawn,          {.v = lockcmd } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
