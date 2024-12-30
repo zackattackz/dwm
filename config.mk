@@ -42,3 +42,6 @@ CC = cc
 ifeq ($(HOST),unagi)
 	CFLAGS := -DUNAGI -DLAPTOP ${CFLAGS}
 endif
+ifeq ($(HOST),okami)
+	CFLAGS := -DOKAMI ${CFLAGS}
+endif
